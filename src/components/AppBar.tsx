@@ -4,14 +4,15 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { Home, Logout } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
+import MenuListComposition from './MenuListComposition';
 
 export default function ButtonAppBar() {
     const navigate = useNavigate();
     const location = useLocation();
 
     const logout = () => {
+        sessionStorage.removeItem('x-access-token');
         navigate('/');
-        sessionStorage.removeItem('token');
     };
 
     return (
@@ -34,8 +35,9 @@ export default function ButtonAppBar() {
                     </IconButton>
                 )}
                 <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                    To-do Yssy
+                    To-do Yssy by Renan Koji
                 </Typography>
+                <MenuListComposition />
             </Toolbar>
         </AppBar>
     );

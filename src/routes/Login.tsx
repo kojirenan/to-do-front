@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Div = styled.div`
     display: flex;
@@ -31,10 +32,21 @@ function Login() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://to-do-jar3.onrender.com/login', {
+            const promise = axios.post('https://to-do-jar3.onrender.com/login', {
                 email,
                 password,
             });
+
+            toast.promise(promise, {
+                pending: 'Logando...',
+                success: 'Login realizado com sucesso!',
+                error: {
+                    render: error => `Erro ao fazer login: ${error}`,
+                    onClose: () => console.error('Erro ao fazer login'),
+                },
+            });
+
+            const response = await promise;
 
             const id = response.data.id;
             const token = response.data.token;

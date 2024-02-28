@@ -7,6 +7,7 @@ import { INote } from '../routes/HomeUser';
 import { TextField } from '@mui/material';
 import { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export default function BasicCard({
     id,
@@ -19,50 +20,80 @@ export default function BasicCard({
 }: INote & { handleRequest: (handle: string) => void }) {
     const formatedDate = date != null ? new Date(date) : '';
     const limitDate =
-        date != null ? 'Concluir até: ' + formatedDate.toLocaleString('pt-BR') : '‎ ';
+        date != null
+            ? 'Concluir até: ' + formatedDate.toLocaleString('pt-BR')
+            : '⠀⠀⠀⠀⠀⠀⠀⠀⠀';
 
     const [editable, setEditable] = useState(false);
 
-    // const [titleUpdate, setTitleUpdate] = useState(title);
-    // const [descriptionUpdate, setDescriptionUpdate] = useState(description);
-    // const [dateUpdate, setDateUpdate] = useState(date);
-    // const [doneUpdate, setDoneUpdate] = useState(done);
+    const [titleUpdate, setTitleUpdate] = useState(title);
+    const [descriptionUpdate, setDescriptionUpdate] = useState(description);
 
-    // console.log(`Title: ${title}, Description: ${description}, Date: ${date}`);
+    const updateNote = () => {
+        console.log('Função executou: ', titleUpdate, descriptionUpdate);
+        try {
+            const randomNumber = Math.floor(Math.random() * 100) + 1;
+            const requestData = {
+                id,
+                titleUpdate,
+                description: descriptionUpdate || null,
+            };
 
-    // const handleSubmit = async (e: React.FormEvent) => {
-    //     if (date == '') setDate(null);
-    //     e.preventDefault();
-    //     try {
-    //         const requestData = {
-    //             title,
-    //             description: description || null,
-    //             date: date || null,
-    //         };
+            const promise = axios.put(
+                `https://to-do-jar3.onrender.com/users/${user_id}/home`,
+                requestData
+            );
 
-    //         axios
-    //             .post(`https://to-do-jar3.onrender.com/users/${id}/home`, requestData)
-    //             .then(res => handleRequest(`${res.data.id}`))
-    //             .catch(err => console.error('Erro ao enviar os dados: ', err));
-    //     } catch (error) {
-    //         console.error('Erro ao fazer login:', error);
-    //     }
-    // };
+            toast.promise(promise, {
+                pending: 'Alterando atividade...',
+                success: 'Atividade alterada!',
+                error: {
+                    render: error => `Erro ao alterar a atividade: ${error}`,
+                    // Ação personalizada após um erro
+                    onClose: () => console.error('Erro ao alterar atividade'),
+                },
+            });
+
+            promise
+                .then(res => {
+                    console.log(res.data);
+                    handleRequest(`${randomNumber}`);
+                    handleEditableToggle();
+                })
+                .catch(err => console.error('Erro ao enviar os dados: ', err));
+        } catch (error) {
+            console.error('Erro ao fazer login:', error);
+        }
+    };
 
     const deleteNote = () => {
         try {
             const randomNumber = Math.floor(Math.random() * 100) + 1;
-            axios
-                .delete(`https://to-do-jar3.onrender.com/users/${user_id}/home`, {
+            const promise = axios.delete(
+                `https://to-do-jar3.onrender.com/users/${user_id}/home`,
+                {
                     data: { id },
-                })
+                }
+            );
+
+            toast.promise(promise, {
+                pending: 'Deletando atividade...',
+                success: 'Atividade deletada!!!',
+                error: {
+                    render: error => `Erro ao deletar atividade: ${error}`,
+                    // Ação personalizada após um erro
+                    onClose: () => console.error('Erro ao deletar atividade'),
+                },
+            });
+
+            promise
                 .then(res => {
                     handleRequest(`${randomNumber}`);
-                    console.log(randomNumber);
                     console.log(res.data);
-                });
+                })
+                .catch(err => console.error('Erro ao excluir atividade: ', err));
         } catch (error) {
-            console.error('Erro ao excluir a nota', error);
+            console.error('Erro ao excluir a atividade', error);
         }
     };
 
@@ -71,79 +102,85 @@ export default function BasicCard({
     };
 
     return (
-        <Card
-            sx={{
-                minWidth: 275,
-                minHeight: 350,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-            }}
-            key={id}
-        >
-            <CardContent>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    {limitDate}
-                </Typography>
-                <Typography sx={{ marginTop: 4 }} variant="h5" component="div">
-                    {editable ? (
-                        <TextField
-                            label="Título"
-                            variant="outlined"
-                            value={title}
-                            // onChange={e => setTitle(e.target.value)}
-                            required
-                        />
-                    ) : (
-                        title
-                    )}
-                </Typography>
-                <Typography
-                    sx={{ display: 'block', marginTop: 2, whiteSpace: 'pre-wrap' }}
-                    color="text.secondary"
-                >
-                    {editable ? (
-                        <TextField
-                            label="Descrição"
-                            variant="outlined"
-                            value={description}
-                            // onChange={e => setTitle(e.target.value)}
-                        />
-                    ) : (
-                        description
-                    )}
-                </Typography>
-                {done}
-                {editable ? (
-                    <Button
-                        size="small"
-                        onClick={handleEditableToggle}
-                        variant="contained"
-                        sx={{ marginTop: 1 }}
+        <div>
+            <Card
+                sx={{
+                    minWidth: 275,
+                    minHeight: 350,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                }}
+                key={id}
+            >
+                <CardContent>
+                    <Typography
+                        sx={{ fontSize: 14 }}
+                        color="text.secondary"
+                        gutterBottom
                     >
-                        {editable ? 'Salvar' : 'Editar'}
-                    </Button>
-                ) : (
-                    ''
-                )}
-            </CardContent>
-            <CardActions sx={{ justifyContent: 'space-between' }}>
-                <Button size="small" onClick={handleEditableToggle}>
-                    {editable ? 'Voltar' : 'Editar'}
-                </Button>
-                {editable ? (
-                    <Button
-                        size="small"
-                        onClick={deleteNote}
-                        variant="outlined"
-                        color="error"
+                        {limitDate}
+                    </Typography>
+                    <Typography sx={{ marginTop: 4 }} variant="h5" component="div">
+                        {editable ? (
+                            <TextField
+                                label="Título"
+                                variant="outlined"
+                                value={titleUpdate}
+                                onChange={e => setTitleUpdate(e.target.value)}
+                                required
+                            />
+                        ) : (
+                            title
+                        )}
+                    </Typography>
+                    <Typography
+                        sx={{ display: 'block', marginTop: 2, whiteSpace: 'pre-wrap' }}
+                        color="text.secondary"
                     >
-                        Excluir
+                        {editable ? (
+                            <TextField
+                                label="Descrição"
+                                variant="outlined"
+                                value={descriptionUpdate}
+                                onChange={e => setDescriptionUpdate(e.target.value)}
+                            />
+                        ) : (
+                            description
+                        )}
+                    </Typography>
+                    {done}
+                    {editable ? (
+                        <Button
+                            size="small"
+                            onClick={updateNote}
+                            variant="contained"
+                            sx={{ marginTop: 1 }}
+                        >
+                            Alterar
+                        </Button>
+                    ) : (
+                        ''
+                    )}
+                </CardContent>
+                <CardActions sx={{ justifyContent: 'space-between' }}>
+                    <Button size="small" onClick={handleEditableToggle}>
+                        {editable ? 'Voltar' : 'Editar'}
                     </Button>
-                ) : (
-                    ''
-                )}
-            </CardActions>
-        </Card>
+                    {editable ? (
+                        <Button
+                            size="small"
+                            onClick={deleteNote}
+                            variant="outlined"
+                            color="error"
+                        >
+                            Excluir
+                        </Button>
+                    ) : (
+                        ''
+                    )}
+                </CardActions>
+            </Card>
+        </div>
     );
 }

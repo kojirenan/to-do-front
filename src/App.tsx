@@ -1,6 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import ButtonAppBar from './components/AppBar';
 import styled from 'styled-components';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Root = styled.main`
     display: flex;
@@ -13,23 +15,33 @@ const Root = styled.main`
     height: 100vh;
 
     #detail {
-        height: 100%;
+        height: 90vh;
+        position: relative;
     }
 `;
 
 function App() {
     return (
-        <Root>
-            <ButtonAppBar />
-
-            <div id="detail">
-                <Outlet />
-            </div>
-            <footer>
-                <p>Esse é um projeto criado para o Desafio Yssy</p>
-                <p>Desenvolvido por Renan Koji Hanashiro: ME CONTRATA YSSY!</p>
-            </footer>
-        </Root>
+        <>
+            <Root>
+                <ButtonAppBar />
+                <div id="detail">
+                    <Outlet />
+                </div>
+            </Root>
+            <ToastContainer
+                position={'top-right'}
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+        </>
     );
 }
 

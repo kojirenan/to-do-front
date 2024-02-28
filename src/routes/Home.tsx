@@ -27,6 +27,9 @@ function Home() {
                 <Button variant="outlined" onClick={() => navigate('/create')}>
                     Criar nova conta
                 </Button>
+                Esse é um projeto criado para o Desafio Yssy
+                <br />
+                Desenvolvido por Renan Koji Hanashiro: ME CONTRATA YSSY!
             </Div>
         </>
     );

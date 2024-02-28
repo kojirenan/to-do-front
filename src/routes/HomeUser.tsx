@@ -1,9 +1,11 @@
-import { Grid } from '@mui/material';
+import { Fab, Grid } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import BasicCard from '../components/Card';
 import styled from 'styled-components';
 import FormNote from '../components/FormNote';
+import TableRowsIcon from '@mui/icons-material/TableRows';
+import { toast } from 'react-toastify';
 
 export interface INote {
     id: number;
@@ -33,6 +35,11 @@ const Div = styled.div`
 function HomeUser() {
     const [notes, setNotes] = useState<INote[]>([]);
     const [handle, setHandler] = useState('');
+    const [visible, setVisible] = useState(false);
+
+    const visibleToggle = () => {
+        setVisible(!visible);
+    };
 
     const handleRequest = (newValue: string) => {
         setHandler(newValue);
@@ -55,8 +62,20 @@ function HomeUser() {
 
     useEffect(() => {
         if (id) {
-            axios
-                .get<INote[]>(`https://to-do-jar3.onrender.com/users/${id}/home`)
+            const promise = axios.get<INote[]>(
+                `https://to-do-jar3.onrender.com/users/${id}/home`
+            );
+
+            toast.promise(promise, {
+                pending: 'Buscando lista...',
+                error: {
+                    render: error => `Erro ao obter as listas: ${error}`,
+                    // Ação personalizada após um erro
+                    onClose: () => console.error('Erro ao obter as listas'),
+                },
+            });
+
+            promise
                 .then(response => setNotes(response.data))
                 .catch(error => {
                     console.error('Erro ao obter as notas:', error);
@@ -81,7 +100,16 @@ function HomeUser() {
                     </Grid>
                 ))}
             </Grid>
-            <FormNote id={id} handleRequest={handleRequest} />
+            <FormNote id={id} handleRequest={handleRequest} visible={visible} />
+            <Fab
+                color="primary"
+                aria-label="Adionar nota"
+                variant="extended"
+                sx={{ position: 'absolute', bottom: 50, right: 60 }}
+                onClick={visibleToggle}
+            >
+                <TableRowsIcon /> Adicinar Nota
+            </Fab>
         </Div>
     );
 }

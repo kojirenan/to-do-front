@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Div = styled.div`
     display: flex;
@@ -31,10 +32,19 @@ function CreateUser() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await axios.post('https://to-do-jar3.onrender.com/users/create', {
+            const promise = axios.post('https://to-do-jar3.onrender.com/users/create', {
                 email,
                 password,
             });
+            toast.promise(promise, {
+                pending: 'Criando usuário...',
+                success: 'Usuário criado!',
+                error: {
+                    render: error => `Erro ao criar usuário: ${error}`,
+                    onClose: () => console.error('Erro ao criar usuário'),
+                },
+            });
+
             navigate('/');
         } catch (error) {
             console.error('Erro ao criar conta:', error);
