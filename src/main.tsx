@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './routes/Login.tsx';
 import App from './App.tsx';
-import './index.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import CreateUser from './routes/CreateUser.tsx';
+import Home from './routes/Home.tsx';
+import HomeUser from './routes/HomeUser.tsx';
 
 const darkTheme = createTheme({
     palette: {
@@ -18,14 +19,24 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: <App />,
-    },
-    {
-        path: '/login',
-        element: <Login />,
-    },
-    {
-        path: '/create',
-        element: <CreateUser />,
+        children: [
+            {
+                path: '/',
+                element: <Home />,
+            },
+            {
+                path: '/login',
+                element: <Login />,
+            },
+            {
+                path: '/create',
+                element: <CreateUser />,
+            },
+            {
+                path: '/user/:id/home',
+                element: <HomeUser />,
+            },
+        ],
     },
 ]);
 
