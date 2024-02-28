@@ -13,8 +13,6 @@ function FormNote({
     const [description, setDescription] = useState('');
     const [date, setDate] = useState<string | null>('');
 
-    console.log(`Title: ${title}, Description: ${description}, Date: ${date}`);
-
     const handleSubmit = async (e: React.FormEvent) => {
         if (date == '') setDate(null);
         e.preventDefault();

@@ -75,6 +75,8 @@ function HomeUser() {
                             description={note.description}
                             date={note.date}
                             done={note.done}
+                            user_id={note.user_id}
+                            handleRequest={handleRequest}
                         />
                     </Grid>
                 ))}
