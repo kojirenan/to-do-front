@@ -103,7 +103,7 @@ function HomeUser() {
             <FormNote id={id} handleRequest={handleRequest} visible={visible} />
             <Fab
                 color="primary"
-                aria-label="Adionar nota"
+                aria-label="Adionar tarefa"
                 variant="extended"
                 sx={{ position: 'absolute', bottom: 50, right: 60 }}
                 onClick={visibleToggle}
