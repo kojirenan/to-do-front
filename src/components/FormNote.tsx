@@ -71,12 +71,14 @@ function FormNote({
                         value={title}
                         onChange={e => setTitle(e.target.value)}
                         required
+                        color="secondary"
                     />
                     <TextField
                         label="Descrição"
                         variant="outlined"
                         value={description}
                         onChange={e => setDescription(e.target.value)}
+                        color="secondary"
                     />
 
                     <TextField
@@ -89,8 +91,19 @@ function FormNote({
                         InputLabelProps={{
                             shrink: true,
                         }}
+                        color="secondary"
                     />
-                    <Button variant="contained" type="submit">
+                    <Button
+                        sx={{
+                            color: '#878072',
+                            border: '#878072 1px solid',
+                            '&:hover': {
+                                borderColor: '#cdc4af',
+                                color: '#cdc4af',
+                            },
+                        }}
+                        type="submit"
+                    >
                         Novo
                     </Button>
                 </Form>

@@ -1,10 +1,20 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import { Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+
+const darkTheme = createTheme({
+    palette: {
+        mode: 'light',
+        primary: {
+            main: '#1B1A17',
+        },
+    },
+});
 
 const Div = styled.div`
     display: flex;
@@ -60,26 +70,28 @@ function Login() {
 
     return (
         <Div>
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    label="e-mail"
-                    variant="outlined"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    required
-                />
-                <TextField
-                    label="senha"
-                    variant="outlined"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    type="password"
-                    required
-                />
-                <Button variant="contained" type="submit">
-                    Logar
-                </Button>
-            </form>
+            <ThemeProvider theme={darkTheme}>
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        label="e-mail"
+                        variant="outlined"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                        required
+                    />
+                    <TextField
+                        label="senha"
+                        variant="outlined"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        type="password"
+                        required
+                    />
+                    <Button variant="contained" type="submit">
+                        Logar
+                    </Button>
+                </form>
+            </ThemeProvider>
         </Div>
     );
 }

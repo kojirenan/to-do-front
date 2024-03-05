@@ -10,6 +10,7 @@ const Div = styled.div`
     align-items: center;
     gap: 48px;
     height: 100%;
+    color: black;
 
     button {
         min-width: 20rem;

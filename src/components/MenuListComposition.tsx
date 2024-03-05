@@ -4,6 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 import { Link } from '@mui/material';
+import { LinkTwoTone } from '@mui/icons-material';
 
 export default function FadeMenu() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -23,8 +24,16 @@ export default function FadeMenu() {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
+                sx={{
+                    color: 'white',
+                    border: 'white 1px solid',
+                    '&:hover': {
+                        borderColor: '#cdc4af',
+                        color: '#cdc4af',
+                    },
+                }}
             >
-                Links
+                <LinkTwoTone /> Links
             </Button>
             <Menu
                 id="fade-menu"
@@ -41,6 +50,7 @@ export default function FadeMenu() {
                         href="https://github.com/kojirenan/"
                         target="_blanket"
                         underline="none"
+                        sx={{ color: 'white' }}
                     >
                         Perfil GitHub
                     </Link>
@@ -50,6 +60,7 @@ export default function FadeMenu() {
                         href="https://github.com/kojirenan/to-do-front"
                         target="_blanket"
                         underline="none"
+                        sx={{ color: 'white' }}
                     >
                         Código Front-End
                     </Link>
@@ -59,6 +70,7 @@ export default function FadeMenu() {
                         href="https://github.com/kojirenan/to-do"
                         target="_blanket"
                         underline="none"
+                        sx={{ color: 'white' }}
                     >
                         Código Back-End
                     </Link>

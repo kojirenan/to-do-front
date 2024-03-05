@@ -1,6 +1,7 @@
 import { Fab, Grid } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+
 import BasicCard from '../components/Card';
 import styled from 'styled-components';
 import FormNote from '../components/FormNote';
@@ -21,7 +22,7 @@ export interface INote {
 const Div = styled.div`
     margin: 2rem;
     form {
-        background-color: gray;
+        background-color: #2f2e2c;
         margin: 4rem;
         padding: 2rem;
         border-radius: 5px;
@@ -87,7 +88,7 @@ function HomeUser() {
         <Div>
             <Grid container spacing={2}>
                 {notes.map(note => (
-                    <Grid item xs={12} sm={6} md={4} key={note.id}>
+                    <Grid item xs={12} key={note.id}>
                         <BasicCard
                             id={note.id}
                             title={note.title}
@@ -102,13 +103,23 @@ function HomeUser() {
             </Grid>
             <FormNote id={id} handleRequest={handleRequest} visible={visible} />
             <Fab
-                color="primary"
                 aria-label="Adionar tarefa"
                 variant="extended"
-                sx={{ position: 'absolute', bottom: 50, right: 60 }}
+                sx={{
+                    position: 'absolute',
+                    bottom: 50,
+                    right: 60,
+                    backgroundColor: '#2F2E2C',
+                    color: 'white',
+                    boxShadow: 'none',
+                    borderRadius: '10px',
+                    '&:hover': {
+                        backgroundColor: '#878072',
+                    },
+                }}
                 onClick={visibleToggle}
             >
-                <TableRowsIcon /> Adicinar Nota
+                <TableRowsIcon /> Nova Tarefa
             </Fab>
         </Div>
     );

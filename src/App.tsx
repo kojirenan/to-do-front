@@ -13,6 +13,7 @@ const Root = styled.main`
     padding: 2rem;
     text-align: center;
     height: 100vh;
+    background-color: #d6cdba;
 
     #detail {
         height: 90vh;

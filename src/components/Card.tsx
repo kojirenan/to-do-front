@@ -21,8 +21,14 @@ export default function BasicCard({
     const formatedDate = date != null ? new Date(date) : '';
     const limitDate =
         date != null
-            ? 'Concluir até: ' + formatedDate.toLocaleString('pt-BR')
-            : '⠀⠀⠀⠀⠀⠀⠀⠀⠀';
+            ? formatedDate.toLocaleString('pt-BR', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+              })
+            : '';
 
     const [editable, setEditable] = useState(false);
 
@@ -81,7 +87,6 @@ export default function BasicCard({
                 success: 'Atividade deletada!!!',
                 error: {
                     render: error => `Erro ao deletar atividade: ${error}`,
-                    // Ação personalizada após um erro
                     onClose: () => console.error('Erro ao deletar atividade'),
                 },
             });
@@ -104,24 +109,15 @@ export default function BasicCard({
     return (
         <div>
             <Card
+                key={id}
                 sx={{
-                    minWidth: 275,
-                    minHeight: 350,
+                    textAlign: 'left',
                     display: 'flex',
-                    flexDirection: 'column',
                     justifyContent: 'space-between',
                 }}
-                key={id}
             >
-                <CardContent>
-                    <Typography
-                        sx={{ fontSize: 14 }}
-                        color="text.secondary"
-                        gutterBottom
-                    >
-                        {limitDate}
-                    </Typography>
-                    <Typography sx={{ marginTop: 4 }} variant="h5" component="div">
+                <CardContent sx={{ width: '100%' }}>
+                    <Typography variant="h4" component="p">
                         {editable ? (
                             <TextField
                                 label="Título"
@@ -129,13 +125,19 @@ export default function BasicCard({
                                 value={titleUpdate}
                                 onChange={e => setTitleUpdate(e.target.value)}
                                 required
+                                color="secondary"
+                                sx={{ width: '100%' }}
                             />
                         ) : (
                             title
                         )}
                     </Typography>
                     <Typography
-                        sx={{ display: 'block', marginTop: 2, whiteSpace: 'pre-wrap' }}
+                        sx={{
+                            display: 'block',
+                            fontSize: '16px',
+                            whiteSpace: 'pre-wrap',
+                        }}
                         color="text.secondary"
                     >
                         {editable ? (
@@ -144,10 +146,15 @@ export default function BasicCard({
                                 variant="outlined"
                                 value={descriptionUpdate}
                                 onChange={e => setDescriptionUpdate(e.target.value)}
+                                sx={{ margin: '14px 0', width: '100%' }}
+                                color="secondary"
                             />
                         ) : (
                             description
                         )}
+                    </Typography>
+                    <Typography color="text.secondary" gutterBottom>
+                        {limitDate}
                     </Typography>
                     {done}
                     {editable ? (
@@ -156,6 +163,7 @@ export default function BasicCard({
                             onClick={updateNote}
                             variant="contained"
                             sx={{ marginTop: 1 }}
+                            color="secondary"
                         >
                             Alterar
                         </Button>
@@ -164,7 +172,11 @@ export default function BasicCard({
                     )}
                 </CardContent>
                 <CardActions sx={{ justifyContent: 'space-between' }}>
-                    <Button size="small" onClick={handleEditableToggle}>
+                    <Button
+                        size="small"
+                        onClick={handleEditableToggle}
+                        color="secondary"
+                    >
                         {editable ? 'Voltar' : 'Editar'}
                     </Button>
                     {editable ? (
@@ -177,7 +189,14 @@ export default function BasicCard({
                             Excluir
                         </Button>
                     ) : (
-                        ''
+                        <Button
+                            size="small"
+                            onClick={deleteNote}
+                            variant="outlined"
+                            color="success"
+                        >
+                            Concluir
+                        </Button>
                     )}
                 </CardActions>
             </Card>

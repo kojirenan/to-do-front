@@ -16,7 +16,15 @@ export default function ButtonAppBar() {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar
+            position="static"
+            sx={{
+                backgroundColor: '#1B1A17',
+                color: 'white',
+                boxShadow: 'none',
+                borderRadius: '10px',
+            }}
+        >
             <Toolbar>
                 {location.pathname.startsWith('/user/') ? (
                     <IconButton color="inherit" onClick={logout}>

@@ -12,6 +12,15 @@ import HomeUser from './routes/HomeUser.tsx';
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',
+        primary: {
+            main: '#1B1A17',
+        },
+        secondary: {
+            main: '#D2C6B3',
+        },
+        background: {
+            default: '#d6cdba',
+        },
     },
 });
 
